@@ -1,0 +1,25 @@
+{
+  "name": "basic_api",
+  "version": "1.0.0",
+  "description": "a paginated basic api for practice purpose.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "pagination",
+    "middleware",
+    "express",
+    "mongodb"
+  ],
+  "author": "PASCHAL OGBA",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.1.0",
+    "mongoose": "^7.6.0"
+  }
+}
