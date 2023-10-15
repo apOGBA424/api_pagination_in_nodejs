@@ -38,44 +38,51 @@ const posts = [
     {id: 12, headline: 'Through accident through consist group live especially', body: 'Provide dry attached was shown vegetable layers careful room firm you hospital bad wheat.', author_id: '10', views: '47', likes: '38', published: '1/8/2066'}
 ]
 
-// app.use(cors());
+app.use(cors());
 app.use(express.json());  // to support JSON-encoded bodies
-
 
 const port = process.env.port || 3000;
 
 
-app.get('/users', (req, res)=>{
-    const currentPage = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 3;
-    const startIndex = (currentPage - 1) * limit;
-    const endIndex = startIndex + limit;
-
-
-    const results = {};
-
-    // show "next" when response not above last page
-    if (endIndex < users.length) {
-        results.next = {
-            page : currentPage + 1,
-            limit 
-        }
-    }
-
-    // show "previous" when response above last page
-    if (startIndex > users.length) {
-        results.previous = {
-            page : currentPage - 1,
-            limit
-        }
-    }
-
-
-    results.data = users.slice(startIndex, endIndex);
-    // results.data = posts.slice(startIndex, endIndex);
-    return res.status(200).json({results});
-    
+app.get('/users', paginatedResults(users), (req, res)=>{
+    return res.status(200).json(res.paginatedResult);
 });
+
+app.get('/posts', paginatedResults(posts), (req, res)=>{
+    return res.status(200).json(res.paginatedResult);
+});
+
+
+
+function paginatedResults(model) {
+    return (req, res, next)=>{
+        const currentPage = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 3;
+        const startIndex = (currentPage - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        const results = {};
+
+        // show "next" when response not above last page
+        if (endIndex < model.length) {
+            results.next = {
+                page : currentPage + 1,
+                limit 
+            }
+        }
+
+        // show "previous" when response above last page
+        if (startIndex > 0) {
+            results.previous = {
+                page : currentPage - 1 ,
+                limit
+            }
+        }
+        results.data = model.slice(startIndex, endIndex);
+        res.paginatedResult = results;
+        next();
+    }
+}
 
 
 app.listen(port, ()=> console.log(`app running on http://localhost:${port}/users`));
