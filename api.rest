@@ -3,8 +3,14 @@
 GET http://localhost:3000/users
 ###
 
+GET http://localhost:3000/posts
+###
 
-# add page number and payload limit
+
+# add page number and payload limit for "users"
 GET http://localhost:3000/users?page=3&limit=4
 ### 
 
+# uri for "posts" data
+GET http://localhost:3000/posts?page=7&limit=2
+###
